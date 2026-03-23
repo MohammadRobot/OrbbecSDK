@@ -51,6 +51,10 @@ typedef enum {
      * @brief IR flood level
      */
     OB_PROP_FLOOD_LEVEL_INT = 7,
+    /**
+     * @brief temperature compensation switch
+     */
+    OB_PROP_TEMPERATURE_COMPENSATION_BOOL = 8,
 
     /**
      * @brief Depth mirror
@@ -384,10 +388,6 @@ typedef enum {
      * @brief Query the status of laser pulse width protection (read-only)
      */
     OB_PROP_LASER_PULSE_WIDTH_PROTECTION_STATUS_BOOL = 149,
-    /**
-     * @brief depth noise removal filter
-     */
-    OB_PROP_DEPTH_NOISE_REMOVAL_FILTER_BOOL = 165,
 
     /**
      * @brief Laser always on, true: always on, false: off, laser will be turned off when out of exposure time
@@ -436,6 +436,11 @@ typedef enum {
      * @brief disparity search range mode
      */
     OB_PROP_DISP_SEARCH_RANGE_MODE_INT = 191,
+
+    /**
+     * @brief cpu temperature correction . true: calibrate temperature
+     */
+    OB_PROP_CPU_TEMPERATURE_CALIBRATION_BOOL = 199,
 
     /**
      * @brief Baseline calibration parameters
@@ -682,6 +687,12 @@ typedef enum {
     OB_PROP_COLOR_FOCUS_INT = 2038,
 
     /**
+     * @brief Depth camera priority
+     *
+     */
+    OB_PROP_DEPTH_AUTO_EXPOSURE_PRIORITY_INT = 2052,
+
+    /**
      * @brief Software disparity to depth
      */
     OB_PROP_SDK_DISPARITY_TO_DEPTH_BOOL = 3004,
@@ -722,6 +733,16 @@ typedef enum {
     OB_PROP_SDK_DEPTH_RECTIFY_MG_FILTER_BOOL = 3013,
 
     /**
+     * @brief Depth Stream Industry Working Mode Settings, currently only supported by DCW2.
+     */
+    OB_PROP_DEPTH_INDUSTRY_MODE_INT = 3024,
+
+    /**
+     * @brief "OpenNI device setting data stream packet size, such as DCW2.
+     */
+    OB_PROP_STREAM_PACK_UNIT_INT = 3025,
+
+    /**
      * @brief Calibration JSON file read from device (Femto Mega, read only)
      */
     OB_RAW_DATA_CAMERA_CALIB_JSON_FILE = 4029,
@@ -734,6 +755,7 @@ typedef enum {
 #define OB_PROP_LASER_ENERGY_LEVEL_INT OB_PROP_LASER_POWER_LEVEL_CONTROL_INT
 #define OB_PROP_LASER_HW_ENERGY_LEVEL_INT OB_PROP_LASER_POWER_ACTUAL_LEVEL_INT
 #define OB_PROP_DEVICE_USB3_REPEAT_IDENTIFY_BOOL OB_PROP_DEVICE_USB2_REPEAT_IDENTIFY_BOOL
+#define OB_PROP_DEPTH_NOISE_REMOVAL_FILTER_BOOL OB_PROP_DEPTH_SOFT_FILTER_BOOL
 
 /**
  * @brief The data type used to describe all property settings

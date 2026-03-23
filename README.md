@@ -1,12 +1,221 @@
 # Orbbec SDK
 
-![stability](https://img.shields.io/badge/stability-stable-green) ![version](https://img.shields.io/badge/version-1.10.11-green)
+![stability](https://img.shields.io/badge/stability-stable-green) ![version](https://img.shields.io/badge/version-1.10.27-green)
 
-The Orbbec 3D camera product software development kit fully supports UVC, enabling driver-free plug-and-play. It provides both low-level and high-level APIs that are simple and easy to use, allowing developers to use it flexibly in different scenarios.
+> [!IMPORTANT]
+>
+> Welcome to the Orbbec SDK. Before you begin using this version of Orbbec SDK, it's crucial to check the following device support list to verify the compatibility.
+>
 
-Additionally, this SDK is compatible with Orbbec's original OpenNI protocol devices through built-in code, enabling developers to migrate to Orbbec SDK to support both new and old products with one set of code.
+This main branch is based on Orbbec SDK v1 and it is compatible with Orbbec's original OpenNI protocol devices through built-in code, enabling developers to migrate to Orbbec SDK to support both new and old products with one set of code.
+
+With the major update in 2024 October, Orbbec SDK becomes open-source with enhanced flexibility and scalability. This update ensures compatibility with all new Orbbec USB products that adhere to the UVC standard. However, [Orbbec SDK v2](https://github.com/orbbec/OrbbecSDK_v2) no longer supports Orbbec's legacy OpenNI protocol devices, which will continue to receive bug fixes support in the Orbbec SDK v1 branch. We encourage you to check out whether your devices is supported by Orbbec SDK v2 and use the new release if it is supported there.
 
 If you are a user in China, it is recommended to use Gitee([gitee Repo](https://gitee.com/orbbecdeveloper/OrbbecSDK)).
+
+Here is the device support list of main branch (v1.x) and Orbbec SDK v2 (v2.x):
+
+<table border="1" style="border-collapse: collapse; text-align: left; width: 100%;">
+  <thead>
+    <tr style="background-color: #1f4e78; color: white; text-align: center;">
+      <th>Product Series</th>
+      <th>Product</th>
+      <th><a href="https://github.com/orbbec/OrbbecSDK/tree/main" style="color: black; text-decoration: none;">Orbbec SDK v1</a></th>
+      <th><a href="https://github.com/orbbec/OrbbecSDK_v2" style="color: black; text-decoration: none;">Orbbec SDK v2</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center; font-weight: bold;">Gemini 305</td>
+      <td>Gemini 305</td>
+      <td>not supported</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td rowspan="2" style="text-align: center; font-weight: bold;">Gemini 340</td>
+      <td>Gemini 345</td>
+      <td>not supported</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Gemini 345Lg</td>
+      <td>not supported</td>
+      <td>recommended for new designs</td>
+    </tr>
+      <tr>
+      <td style="text-align: center; font-weight: bold;">Gemini 435Le</td>
+      <td>Gemini 435Le</td>
+      <td>not supported</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td rowspan="8" style="text-align: center; font-weight: bold;">Gemini 330</td>
+      <td>Gemini 335Le</td>
+      <td>not supported</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Gemini 335</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Gemini 336</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Gemini 330</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Gemini 335L</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Gemini 336L</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Gemini 330L</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Gemini 335Lg</td>
+      <td>not supported</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td rowspan="5" style="text-align: center; font-weight: bold;">Gemini 2</td>
+      <td>Gemini 2</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Gemini 2 L</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Gemini 2 XL</td>
+      <td>recommended for new designs</td>
+      <td>to be supported</td>
+    </tr>
+    <tr>
+      <td>Gemini 215</td>
+      <td>not supported</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Gemini 210</td>
+      <td>not supported</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td rowspan="3" style="text-align: center; font-weight: bold;">Femto</td>
+      <td>Femto Bolt</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Femto Mega</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Femto Mega I</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td rowspan="3" style="text-align: center; font-weight: bold;">Astra</td>
+      <td>Astra 2</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Astra+</td>
+      <td>limited maintenance</td>
+      <td>not supported</td>
+    </tr>
+    <tr>
+      <td>Astra Pro Plus</td>
+      <td>limited maintenance</td>
+      <td>not supported</td>
+    </tr>
+    <tr>
+      <td rowspan="2" style="text-align: center; font-weight: bold;">Astra Mini</td>
+      <td>Astra Mini Pro</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    <tr>
+      <td>Astra Mini S Pro</td>
+      <td>full maintenance</td>
+      <td>recommended for new designs</td>
+    </tr>
+    </tr>
+        <tr>
+      <td rowspan="2" style="text-align: center; font-weight: bold;">LiDAR</td>
+      <td>Pulsar ME450</td>
+      <td>not supported</td>
+      <td>recommended for new designs</td>
+    </tr>
+    <tr>
+      <td>Pulsar SL450</td>
+      <td>not supported</td>
+      <td>recommended for new designs</td>
+    </tr>
+  </tbody>
+</table>
+
+**Note**: 
+1. If you do not find your device, please contact our FAE or sales representative for help.
+2. If a device is supported by both Orbbec SDK v1 and Orbbec SDK v2, **the minimum supported firmware version may differ between the two SDKs.** Please refer to **Supported Devices** list for detailed information.
+In particular, note that the Astra Mini Pro and Astra Mini S Pro use different communication protocols in firmware v1.x.x and v2.x.x, Orbbec SDK v1 supports only v1.x.x firmware, while Orbbec SDK v2 supports only v2.x.x firmware. Upgrading from v1.x.x to v2.x.x, please refer to [Upgrading from OpenNI Protocol to UVC Protocol](https://github.com/orbbec/OrbbecSDK_v2?tab=readme-ov-file#12-upgrading-from-openni-protocol-to-uvc-protocol).
+
+
+
+**Definition**:
+
+1. recommended for new designs: we will provide full supports with new features,  bug fix and performance optimization;
+2. full maintenance: we will provide bug fix support;
+3. limited maintenance: we will provide critical bug fix support;
+4. not supported: we will not support specific device in this version;
+5. to be supported: we will add support in the near future.
+
+
+## Supported Devices
+
+| **Products List** | **Minimal Firmware Version** |
+|-------------------|-----------------------------|
+| Gemini 330        | 1.2.20                      |    
+| Gemini 330L        | 1.2.20                     |  
+| Gemini 335        | 1.2.20                      | 
+| Gemini 335L        | 1.2.20                     | 
+| Gemini 336        | 1.2.20                      |
+| Gemini 336L        | 1.2.20                     |    
+| Femto Bolt        | 1.0.6                       |         
+| Femto Mega        | 1.1.7                       |        
+| Femto Mega I      | 2.0.2                       |  
+| Gemini 2 XL       | Obox: V1.2.5  VL:1.4.54     |
+| Astra 2           | 2.8.20                      |
+| Gemini 2 L        | 1.4.32                      |
+| Gemini 2          | 1.4.60                      |       
+| Astra+            | 1.0.19                      |                      
+| Femto             | 1.6.7                       |
+| Femto W           | 1.1.8                       | 
+| DaBai             | 2436                        | 
+| DaBai DCW         | 2460                        | 
+| DaBai DW          | 2606                        | 
+| Gemini E          | 3460                        |
+| Gemini E Lite     | 3606                        | 
+| Gemini            | 3018                        |
+| Astra Mini Pro    | 1007                        | 
+| Astra Mini S Pro  | 1005                        |
 
 ## What is included in the repository
 
@@ -28,38 +237,15 @@ More information about the license of each module can be found in the [license f
 
 | Operating system | Requirement                                                                                  | Description                                                                                                                             |
 |------------------|----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
-| Windows          | - Windows 10 April 2018 (version 1803, operating system build 17134) release (x64) or higher | The generation of the VS project depends on the installation of the VS version and the cmake version, and supports VS2015/vs2017/vs2019 |
-| Linux            | - Linux Ubuntu 16.04/18.04/20.04 (x64)                                                       | Support GCC 7.5                                                                                                                         |
+| Windows          | - Windows 10 April 2018 (version 1803, operating system build 17134) release (x64) or higher ,windows 11 | The generation of the VS project depends on the installation of the VS version and the cmake version, and supports VS2015/vs2017/vs2019 |
+| Linux            | - Linux Ubuntu 16.04/18.04/20.04/22.04 (x64)                                                       | Support GCC 7.5                                                                                                                         |
 | Arm32            | - Linux Ubuntu 16.04/18.04/20.04                                                             | Support GCC 7.5                                                                                                                         |
-| Arm64            | - Linux Ubuntu 18.04/20.04                                                                   | Support GCC 7.5                                                                                                                         |
+| Arm64            | - Linux Ubuntu 18.04/20.04/22.04                                                                   | Support GCC 7.5                                                                                                                         |
 | MacOS            | - M series chip, 11.0 and above; Intel x86 chip, 10.15 and above.                            | supported hardware products: Gemini 2, Gemini 2 L, Astra 2, Gemini 2 XL, Femto Mega, Gemini 330 series                                                   |
 
 * Note: supported Arm platforms: NVIDIA Jetson AGX Orin (arm64), NVIDIA Jetson Orin NX (arm64), NVIDIA Jetson Orin Nano (arm64), NVIDIA Jetson AGX Xavier (arm64), NVIDIA Jetson Xavier NX (arm64), NVIDIA Jetson Nano (arm64), A311D (arm64), Raspberry Pi 4 (arm64), Raspberry Pi 3 (arm32), RK3399 (arm64), other Arm platforms, may need to Cross-compile.
-* Windows 11, Ubuntu 22.04 and other Linux platforms may also be supported, but have not been fully tested.
 
-## Product support
 
-| **Products List** | **Firmware Version**        |
-|-------------------|-----------------------------|
-| Gemini 335        | 1.2.20                      |
-| Gemini 335L        | 1.2.20                     |
-| Femto Bolt        | 1.0.6/1.0.9                 |
-| Femto Mega        | 1.1.7/1.2.7                 |
-| Gemini 2 XL       | Obox: V1.2.5  VL:1.4.54     |
-| Astra 2           | 2.8.20                      |
-| Gemini 2 L        | 1.4.32                      |
-| Gemini 2          | 1.4.60 /1.4.76              |
-| Astra+            | 1.0.22/1.0.21/1.0.20/1.0.19 |
-| Femto             | 1.6.7                       |
-| Femto W           | 1.1.8                       |
-| DaBai             | 2436                        |
-| DaBai DCW         | 2460                        |
-| DaBai DW          | 2606                        |
-| Astra Mini Pro    | 1007                        |
-| Gemini E          | 3460                        |
-| Gemini E Lite     | 3606                        |
-| Gemini            | 3.0.18                      |
-| Astra Mini S Pro  | 1.0.05                      |
 
 ## OrbbecViewer
 
@@ -122,6 +308,7 @@ Notes: On MacOS, sudo privileges are required.
 ```bash
 # MacOS
 cd OrbbecSDK/build/bin # build output dir
+cp ../../lib/macOS/* . # copy lib to output dir
 sudo ./OBMultiStream
 ```
 
@@ -164,6 +351,8 @@ target_link_libraries(${PROJECT_NAME} OrbbecSDK::OrbbecSDK)
 * API Reference: [doc/api/English/index.html](https://orbbec.github.io/OrbbecSDK/doc/api/English/index.html)
 * OrbbecSDK C++ API user guide：[doc/tutorial/English/OrbbecSDK_C++_API_user_guide-v1.0.pdf](https://orbbec.github.io/OrbbecSDK/doc/tutorial/English/OrbbecSDK_C++_API_user_guide-v1.0.pdf)
 
+### Multi Camera Sync
+* Multi Camera Sync Document: [Multi Camera Sync](https://www.orbbec.com/docs/set-up-cameras-for-external-synchronization_v1-2/)
 
 ## Frequently Asked Questions
 
@@ -172,7 +361,7 @@ target_link_libraries(${PROJECT_NAME} OrbbecSDK::OrbbecSDK)
 **Insufficient Power Supply**:
   - Ensure that all cameras are not connected to the same hub.
   - Use a powered hub to provide sufficient power to each camera.
-  
+
 **High Resolution**:
   - Try lowering the resolution to resolve data stream issues.
 

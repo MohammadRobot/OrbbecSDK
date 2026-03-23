@@ -6,6 +6,22 @@ using namespace std;
 #include <libobsensor/hpp/Utils.hpp>
 using namespace ob;
 
+const std::map<std::string, uint16_t> gemini_330_list = { { "gemini335", 0x0800 },  { "Gemini330", 0x0801 },   { "gemini336", 0x0803 },
+                                                          { "gemini335L", 0x0804 }, { "Gemini 330L", 0x0805 }, { "gemini336L", 0x0807 },
+                                                          { "Gemini335Lg", 0x080B } };
+
+bool IsGemini330Series(uint16_t pid) {
+    bool find = false;
+    for(auto it = gemini_330_list.begin(); it != gemini_330_list.end(); ++it) {
+        if(it->second == pid) {
+            // std::cout << "find gemini 330 series : " << it->first << std::endl;
+            find = true;
+            break;
+        }
+    }
+    return find;
+}
+
 void savePointsDataToPly(uint8_t *pointcloudData, uint32_t pointcloudSize, std::string fileName) {
     int   pointsSize = pointcloudSize / sizeof(OBPoint);
     FILE *fp         = fopen(fileName.c_str(), "wb+");
@@ -65,7 +81,7 @@ int depthPointCloudTransformation(std::shared_ptr<ob::Device> device, int case_n
     OBAlignMode                            alignMode = ALIGN_DISABLE;
 
     depthProfileList  = pipeline->getStreamProfileList(OB_SENSOR_DEPTH);
-    auto depthProfile = depthProfileList->getVideoStreamProfile(640, OB_HEIGHT_ANY, OB_FORMAT_Y16, OB_FPS_ANY);
+    auto depthProfile = depthProfileList->getVideoStreamProfile(OB_WIDTH_ANY, OB_HEIGHT_ANY, OB_FORMAT_Y16, OB_FPS_ANY);
     if(depthProfile) {
         config->enableStream(depthProfile);
     }
@@ -220,7 +236,7 @@ int RGBPointCloudTransformation(std::shared_ptr<ob::Device> device) {
         // Get all stream profiles of the color camera, including stream resolution,
         // frame rate, and frame format
         auto colorProfiles = pipeline->getStreamProfileList(OB_SENSOR_COLOR);
-        colorProfile       = colorProfiles->getVideoStreamProfile(1280, OB_HEIGHT_ANY, OB_FORMAT_RGB, OB_FPS_ANY);
+        colorProfile       = colorProfiles->getVideoStreamProfile(OB_WIDTH_ANY, OB_HEIGHT_ANY, OB_FORMAT_RGB, OB_FPS_ANY);
         if(colorProfile) {
             config->enableStream(colorProfile);
         }
@@ -258,7 +274,7 @@ int RGBPointCloudTransformation(std::shared_ptr<ob::Device> device) {
         try {
             // Select the profile with the same frame rate as color.
             if(colorProfile) {
-                depthProfile = depthProfileList->getVideoStreamProfile(640, OB_HEIGHT_ANY, OB_FORMAT_ANY, colorProfile->fps());
+                depthProfile = depthProfileList->getVideoStreamProfile(OB_WIDTH_ANY, OB_HEIGHT_ANY, OB_FORMAT_ANY, colorProfile->fps());
             }
         }
         catch(...) {
@@ -301,9 +317,10 @@ int RGBPointCloudTransformation(std::shared_ptr<ob::Device> device) {
         return -1;
     }
 
-    int count = 0;
+    bool savePoint = false;
+    int  count     = 0;
     // Limit up to 10 repetitions
-    while(count++ < 20) {
+    while(count++ < 100) {
         // Wait for a frame of data, the timeout is 100ms
         auto frameset = pipeline->waitForFrames(100);
         if(frameset != nullptr && frameset->depthFrame() != nullptr && frameset->colorFrame() != nullptr) {
@@ -318,13 +335,14 @@ int RGBPointCloudTransformation(std::shared_ptr<ob::Device> device) {
             ob::CoordinateTransformHelper::transformationDepthToRGBDPointCloud(&xyTables, depthFrame->data(), colorFrame->data(), pointPixel);
 
             saveRGBDPointsDataToPly((uint8_t *)pointcloudData, pointcloudSize, "RGBDDepthPointsWithTables.ply");
-            std::cout << "DepthPointsWithTables.ply Saved" << std::endl;
-
+            std::cout << "RGBDDepthPointsWithTables.ply Saved" << std::endl;
+            savePoint = true;
             break;
         }
-        else {
-            std::cout << "Get color frame or depth frame failed!" << std::endl;
-        }
+    }
+
+    if(!savePoint) {
+        std::cout << "Failed to save RGBDDepthPointsWithTables.ply, color frame or depth frame " << std::endl;
     }
 
     // stop the pipeline
@@ -353,7 +371,7 @@ int depth2DToColor2DTransformation(std::shared_ptr<ob::Device> device) {
     try {
         // Get all stream profiles of the color camera, including stream resolution,frame rate, and frame format
         auto colorProfiles = pipeline->getStreamProfileList(OB_SENSOR_COLOR);
-        colorProfile       = colorProfiles->getVideoStreamProfile(1280, OB_HEIGHT_ANY, OB_FORMAT_RGB, OB_FPS_ANY);
+        colorProfile       = colorProfiles->getVideoStreamProfile(OB_WIDTH_ANY, OB_HEIGHT_ANY, OB_FORMAT_RGB, OB_FPS_ANY);
         if(colorProfile) {
             config->enableStream(colorProfile);
         }
@@ -373,7 +391,7 @@ int depth2DToColor2DTransformation(std::shared_ptr<ob::Device> device) {
         try {
             // Select the profile with the same frame rate as color.
             if(colorProfile) {
-                depthProfile = depthProfileList->getVideoStreamProfile(640, OB_HEIGHT_ANY, OB_FORMAT_ANY, colorProfile->fps());
+                depthProfile = depthProfileList->getVideoStreamProfile(OB_WIDTH_ANY, OB_HEIGHT_ANY, OB_FORMAT_ANY, colorProfile->fps());
             }
         }
         catch(...) {
@@ -457,7 +475,7 @@ int color2DToDepth2DTransformation(std::shared_ptr<ob::Device> device) {
     try {
         // Get all stream profiles of the color camera, including stream resolution,frame rate, and frame format
         auto colorProfiles = pipeline->getStreamProfileList(OB_SENSOR_COLOR);
-        colorProfile       = colorProfiles->getVideoStreamProfile(1280, OB_HEIGHT_ANY, OB_FORMAT_RGB, OB_FPS_ANY);
+        colorProfile       = colorProfiles->getVideoStreamProfile(OB_WIDTH_ANY, OB_HEIGHT_ANY, OB_FORMAT_RGB, OB_FPS_ANY);
         if(colorProfile) {
             config->enableStream(colorProfile);
         }
@@ -477,7 +495,7 @@ int color2DToDepth2DTransformation(std::shared_ptr<ob::Device> device) {
         try {
             // Select the profile with the same frame rate as color.
             if(colorProfile) {
-                depthProfile = depthProfileList->getVideoStreamProfile(640, OB_HEIGHT_ANY, OB_FORMAT_ANY, colorProfile->fps());
+                depthProfile = depthProfileList->getVideoStreamProfile(OB_WIDTH_ANY, OB_HEIGHT_ANY, OB_FORMAT_ANY, colorProfile->fps());
             }
         }
         catch(...) {
@@ -497,9 +515,10 @@ int color2DToDepth2DTransformation(std::shared_ptr<ob::Device> device) {
     // start pipeline with config
     pipeline->start(config);
 
-    auto param = pipeline->getCalibrationParam(config);
-
-    int count = 0;
+    auto         param           = pipeline->getCalibrationParam(config);
+    OBStreamType align_to_stream = OB_STREAM_COLOR;
+    ob::Align    align(align_to_stream);
+    int          count = 0;
     // Limit up to 10 repetitions
     while(count++ < 20) {
         // Wait for a frame of data, the timeout is 100ms
@@ -512,17 +531,36 @@ int color2DToDepth2DTransformation(std::shared_ptr<ob::Device> device) {
         auto depthFrame = frameset->depthFrame();
         if(depthFrame != nullptr && colorFrame != nullptr) {
 
-            uint32_t colorWidth  = colorFrame->width();
-            uint32_t colorHeight = colorFrame->height();
-
+            uint32_t                        colorWidth    = colorFrame->width();
+            uint32_t                        colorHeight   = colorFrame->height();
+            auto                            deviceInfo    = device->getDeviceInfo();
+            auto                            pid           = deviceInfo->pid();
+            uint16_t                       *depthAfterD2C = nullptr;
+            float                           valueScale    = 1;
+            std::shared_ptr<ob::DepthFrame> depthD2CFrame = nullptr;
             // Because of the conversion from Color 2D to Depth 2D, the Depth values of Color points are required, so D2C conversion is needed
-            auto depthD2CFrame = ob::CoordinateTransformHelper::transformationDepthFrameToColorCamera(device, depthFrame, colorWidth, colorHeight);
+            if(IsGemini330Series(pid)) {
+                auto newFrame = align.process(frameset);
+                if(newFrame == nullptr) {
+                    continue;
+                }
+                auto newFrameSet = newFrame->as<ob::FrameSet>();
+                depthD2CFrame    = newFrameSet->depthFrame();
+            }
+            else {
+                auto frame = ob::CoordinateTransformHelper::transformationDepthFrameToColorCamera(device, depthFrame, colorWidth, colorHeight);
+                if(frame == nullptr) {
+                    continue;
+                }
+                depthD2CFrame = frame->as<ob::DepthFrame>();
+            }
 
-            auto      valueScale    = depthD2CFrame->as<ob::DepthFrame>()->getValueScale();
-            uint16_t *depthAfterD2C = (uint16_t *)depthD2CFrame->data();
             if(depthD2CFrame == nullptr) {
                 continue;
             }
+
+            valueScale    = depthD2CFrame->as<ob::DepthFrame>()->getValueScale();
+            depthAfterD2C = (uint16_t *)depthD2CFrame->data();
 
             // Convert the coordinates of the center point of Color to Depth coordinates
             OBPoint2f sourcePoint2f;
